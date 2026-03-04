@@ -44,29 +44,28 @@ async function run() {
         const stdout = ""; // For backward compatibility in parsing logic if needed
 
         // 2. Determine verdict
-        const status = result.status || result.verdict || "UNKNOWN";
+        const status = result.verdict || "UNKNOWN";
         const isCompliant = status === "COMPLIANT";
-        const rulesTriggered = result.rules_triggered || result.triggered_rules || [];
-        const score = result.score ?? result.compliance_score ?? "N/A";
-        const summary = result.summary || "";
+        const flagsTriggered = result.flags_triggered || [];
+        const score = result.risk_score ?? "N/A";
+        const appName = result.app_name || "Unknown App";
+        const appVersion = result.version || "0.0.0";
 
         // 4. Build PR comment
-        const rulesList = rulesTriggered.length > 0
-            ? rulesTriggered.map((r) => `- \`${typeof r === "string" ? r : r.rule_id || r}\``).join("\n")
+        const flagsList = flagsTriggered.length > 0
+            ? flagsTriggered.map((f) => `- \`${f}\``).join("\n")
             : "_None_";
 
-        const statusEmoji = isCompliant ? "✅" : "❌";
+        const statusEmoji = isCompliant ? "✅" : (status === "HUMAN_INTERVENTION_REQUIRED" ? "⚠️" : "❌");
         const commentBody = [
             "## 🛡 Sentinel EU AI Act Compliance Scan",
             "",
+            `**App:** \`${appName}\` @ \`v${appVersion}\``,
             `**Status:** ${statusEmoji} \`${status}\``,
+            `**Risk Score:** \`${score}/100\``,
             "",
-            "### Triggered Rules",
-            rulesList,
-            "",
-            `**Compliance Score:** ${score}${typeof score === "number" ? "%" : ""}`,
-            "",
-            summary ? `> ${summary}` : "",
+            "### 🚩 Triggered Flags / Issues",
+            flagsList,
             "",
             "---",
             "_Usage in Workflow:_ ",
