@@ -1,5 +1,5 @@
 name: "Sentinel AI Compliance Scan"
-description: "Run EU AI Act compliance scan using Sentinel CLI. Automated conformity check for every PR."
+description: "Verify EU AI Act compliance in 10 seconds. Automated audit for transparency, bias, and human oversight directly in your PR."
 author: "sentinel-ai"
 
 inputs:
