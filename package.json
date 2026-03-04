@@ -13,8 +13,8 @@
     "license": "Proprietary",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "obfuscate": "javascript-obfuscator index.js --output lib/index-obfuscated.js --compact true --self-defending false --string-array true --string-array-encoding base64 --rename-globals true",
-        "build": "npm run obfuscate && ncc build lib/index-obfuscated.js -o dist --minify --no-cache"
+        "obfuscate": "javascript-obfuscator index.js --output index-obfuscated.js --compact true --self-defending false --string-array true --string-array-encoding base64 --rename-globals true",
+        "build": "npm run obfuscate && ncc build index-obfuscated.js -o dist --minify --no-cache && rm index-obfuscated.js"
     },
     "dependencies": {
         "@actions/core": "^1.10.0",
