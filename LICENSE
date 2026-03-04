@@ -1,0 +1,26 @@
+# Sentinel Proprietary License
+
+Copyright (c) 2026 Sentinel AI. All Rights Reserved.
+
+## 1. OWNERSHIP AND GRANT OF USE
+Sentinel ("the Software"), including its source code, binaries, WebAssembly (WASM) modules, and associated documentation, is the exclusive intellectual property of Sentinel AI ("the Licensor"). 
+
+The Licensor grants you a limited, non-exclusive, non-transferable right to use the Software solely through its official distribution channels (e.g., GitHub Actions). This grant does not include access to the underlying source code.
+
+## 2. RESTRICTIONS
+You are strictly prohibited from:
+- **Reverse Engineering**: You shall not decompile, disassemble, or otherwise attempt to derive the source code from the WASM engine or any obfuscated components.
+- **Redistribution**: You shall not copy, modify, distribute, or create derivative works of the Software without explicit written permission from the Licensor.
+- **Sublicensing**: You shall not sell, rent, or lease the Software to any third party.
+
+## 3. PROPRIETARY RIGHTS
+All intellectual property rights in and to the Software are and shall remain the sole property of the Licensor. Nothing in this License shall be construed as a transfer of ownership.
+
+## 4. TERMINATION
+This License is effective until terminated. Your rights under this License will terminate automatically without notice from the Licensor if you fail to comply with any of its terms.
+
+## 5. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+---
+For commercial licensing inquiries, contact: license@sentinel-ai.dev

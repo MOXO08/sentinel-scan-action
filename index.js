@@ -6,51 +6,44 @@ async function run() {
     try {
         const manifest = core.getInput("manifest") || "./manifest.json";
         const enforce = core.getInput("enforce") === "true";
+        const license = core.getInput("license_token");
 
-        // 1. Run Sentinel CLI via npx, capture JSON output
-        let stdout = "";
-        let stderr = "";
+        if (license) {
+            process.env.SENTINEL_LICENSE = license;
+        }
 
-        const exitCode = await exec
-            .exec("npx", ["-y", "@radu_api/sentinel-scan", manifest, "--json"], {
-                listeners: {
-                    stdout: (data) => { stdout += data.toString(); },
-                    stderr: (data) => { stderr += data.toString(); },
-                },
-                ignoreReturnCode: true,
-            })
-            .catch(async () => {
-                // Fallback: install globally if npx fails
-                core.info("npx @radu_api/sentinel-scan not found, installing package...");
-                await exec.exec("npm", ["install", "-g", "@radu_api/sentinel-scan"]);
-                stdout = "";
-                stderr = "";
-                return exec.exec("sentinel-scan", [manifest, "--json"], {
-                    listeners: {
-                        stdout: (data) => { stdout += data.toString(); },
-                        stderr: (data) => { stderr += data.toString(); },
-                    },
-                    ignoreReturnCode: true,
-                });
-            });
+        // 1. Run Sentinel Audit locally via WASM
+        const fs = require("fs");
+        const path = require("path");
+        const { run_audit } = require("./lib/sentinel_core.js");
 
-        // 2. Parse JSON output
-        let result;
-        try {
-            // Extract JSON from stdout (skip any non-JSON prefix lines)
-            const jsonStart = stdout.indexOf("{");
-            const jsonEnd = stdout.lastIndexOf("}");
-            if (jsonStart === -1 || jsonEnd === -1) {
-                throw new Error("No JSON object found in CLI output");
-            }
-            const jsonStr = stdout.substring(jsonStart, jsonEnd + 1);
-            result = JSON.parse(jsonStr);
-        } catch (parseErr) {
-            core.setFailed(`Failed to parse Sentinel output: ${parseErr.message}\nRaw output:\n${stdout}`);
+        if (!fs.existsSync(manifest)) {
+            core.setFailed(`Manifest file not found: ${manifest}`);
             return;
         }
 
-        // 3. Determine verdict
+        const manifestContent = fs.readFileSync(manifest, "utf8");
+        const rules = {
+            rules: [
+                { id: "ART5-001", description: "Subliminal manipulation", risk_category: "Unacceptable", forbidden_flags: ["subliminal_techniques"] },
+                { id: "ART5-003", description: "Social scoring", risk_category: "Unacceptable", forbidden_flags: ["social_scoring"] },
+                { id: "ART10-001", description: "Data governance & Bias assessment", risk_category: "High", required_flags: ["bias_assessment_performed", "data_governance_policy_documented"] },
+                { id: "ART14-001", description: "Human oversight", risk_category: "High", required_flags: ["human_oversight_enabled"] },
+            ]
+        };
+
+        let result;
+        try {
+            const verdictText = run_audit(manifestContent, JSON.stringify(rules));
+            result = JSON.parse(verdictText);
+        } catch (err) {
+            core.setFailed(`Sentinel Engine error: ${err.message}`);
+            return;
+        }
+
+        const stdout = ""; // For backward compatibility in parsing logic if needed
+
+        // 2. Determine verdict
         const status = result.status || result.verdict || "UNKNOWN";
         const isCompliant = status === "COMPLIANT";
         const rulesTriggered = result.rules_triggered || result.triggered_rules || [];
@@ -76,9 +69,11 @@ async function run() {
             summary ? `> ${summary}` : "",
             "",
             "---",
-            "_Run locally:_",
-            "```bash",
-            `npx @radu_api/sentinel-scan ${manifest}`,
+            "_Usage in Workflow:_ ",
+            "```yaml",
+            "- uses: radu_api/sentinel-scan-action@v1",
+            "  with:",
+            `    manifest: "${manifest}"`,
             "```",
             "",
             `<sub>Powered by <a href="https://sentinel-ai.dev">Sentinel</a></sub>`,

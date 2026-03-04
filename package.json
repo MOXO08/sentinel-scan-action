@@ -10,16 +10,19 @@
         "github-action"
     ],
     "author": "sentinel-ai",
-    "license": "MIT",
+    "license": "Proprietary",
     "scripts": {
-        "build": "ncc build index.js -o dist --license licenses.txt"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "obfuscate": "javascript-obfuscator index.js --output lib/index-obfuscated.js --compact true --self-defending false --string-array true --string-array-encoding base64 --rename-globals true",
+        "build": "npm run obfuscate && ncc build lib/index-obfuscated.js -o dist --minify --no-cache"
     },
     "dependencies": {
-        "@actions/core": "^1.11.1",
-        "@actions/exec": "^1.1.1",
-        "@actions/github": "^6.0.0"
+        "@actions/core": "^1.10.0",
+        "@actions/github": "^5.1.1",
+        "@actions/exec": "^1.1.1"
     },
     "devDependencies": {
-        "@vercel/ncc": "^0.38.4"
+        "@vercel/ncc": "^0.36.1",
+        "javascript-obfuscator": "^4.1.0"
     }
 }

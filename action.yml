@@ -11,6 +11,9 @@ inputs:
     description: "If 'true', the action will fail on NON_COMPLIANT verdict. If 'false', it will only warn."
     required: false
     default: "false"
+  license_token:
+    description: "Your Sentinel License JWT (Pro/B2B)"
+    required: false
 
 runs:
   using: "node20"
