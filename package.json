@@ -1,0 +1,25 @@
+{
+    "name": "sentinel-scan-action",
+    "version": "1.0.0",
+    "description": "GitHub Action for EU AI Act compliance scanning with Sentinel",
+    "main": "index.js",
+    "keywords": [
+        "eu-ai-act",
+        "compliance",
+        "sentinel",
+        "github-action"
+    ],
+    "author": "sentinel-ai",
+    "license": "MIT",
+    "scripts": {
+        "build": "ncc build index.js -o dist --license licenses.txt"
+    },
+    "dependencies": {
+        "@actions/core": "^1.11.1",
+        "@actions/exec": "^1.1.1",
+        "@actions/github": "^6.0.0"
+    },
+    "devDependencies": {
+        "@vercel/ncc": "^0.38.4"
+    }
+}

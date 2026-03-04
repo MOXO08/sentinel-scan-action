@@ -1,0 +1,21 @@
+name: "Sentinel AI Compliance Scan"
+description: "Run EU AI Act compliance scan using Sentinel CLI. Automated conformity check for every PR."
+author: "sentinel-ai"
+
+inputs:
+  manifest:
+    description: "Path to manifest.json"
+    required: false
+    default: "./manifest.json"
+  enforce:
+    description: "If 'true', the action will fail on NON_COMPLIANT verdict. If 'false', it will only warn."
+    required: false
+    default: "false"
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
+
+branding:
+  icon: "shield"
+  color: "purple"

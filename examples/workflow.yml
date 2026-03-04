@@ -1,0 +1,22 @@
+name: Sentinel Compliance
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  sentinel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Sentinel scan
+        uses: sentinel-ai/sentinel-scan-action@v1
+        with:
+          manifest: "./manifest.json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
