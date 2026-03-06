@@ -144,7 +144,11 @@ async function run() {
             `    manifest: "${manifest}"`,
             "```",
             "",
-            `<sub>Powered by <a href="https://gettingsentinel.com">Sentinel</a></sub>`,
+            "---",
+            "### ⚖️ Regulatory Notice",
+            "> **Disclaimer:** This scan provides a heuristic technical assessment of AI Act alignment at the source-code layer. Sentinel audits are strictly technical in nature and do NOT constitute legal advice, nor do they guarantee absolute regulatory compliance or official CE certification.",
+            "",
+            `<sub>Powered by <a href="https://gettingsentinel.com">Sentinel</a> · <a href="https://gettingsentinel.com/legal">Terms of Service</a></sub>`,
         ]
             .filter(Boolean)
             .join("\n");
