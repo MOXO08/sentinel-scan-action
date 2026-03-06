@@ -51,7 +51,7 @@ async function run() {
                         type: "FREE_TIER_PING"
                     });
                     const req = https.request({
-                        hostname: 'sentinel-api.sentinel-moxo.workers.dev',
+                        hostname: 'gettingsentinel.com',
                         path: '/api/v1/telemetry/ping',
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(postData) }
@@ -87,7 +87,7 @@ async function run() {
         const clientPlan = result.client_plan || "developer";
         const isPro = clientPlan.includes("pro") || clientPlan.includes("enterprise");
         const auditTrail = isPro
-            ? `✅ **Immutable Audit Trail:** [Enabled](${result.audit_url || "https://sentinel-api.sentinel-moxo.workers.dev/dashboard"})`
+            ? `✅ **Immutable Audit Trail:** [Enabled](${result.audit_url || "https://gettingsentinel.com/dashboard"})`
             : `🔒 **Immutable Audit Trail:** [Locked] (Unlock with [Sentinel Pro](https://gettingsentinel.com#pricing))`;
 
         const statusEmoji = isCompliant ? "✅" : (status === "HUMAN_INTERVENTION_REQUIRED" ? "⚠️" : "❌");
@@ -144,7 +144,7 @@ async function run() {
             `    manifest: "${manifest}"`,
             "```",
             "",
-            `<sub>Powered by <a href="https://sentinel-ai.dev">Sentinel</a></sub>`,
+            `<sub>Powered by <a href="https://gettingsentinel.com">Sentinel</a></sub>`,
         ]
             .filter(Boolean)
             .join("\n");
